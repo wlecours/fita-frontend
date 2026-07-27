@@ -1,0 +1,50 @@
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+## Project overview
+
+Fita is a static, multi-page marketing/e-commerce front end (Spanish-language, healthy food brand) built with plain HTML and SCSS. There is **no JavaScript, no package.json, and no build tool** (no npm, webpack, Vite, etc.). The `.idea/` project files indicate this is developed in a JetBrains IDE, most likely relying on its built-in SCSS file watcher to compile Sass on save.
+
+## Build / compile
+
+There are no npm scripts to run. To regenerate CSS after editing SCSS, compile `scss/style.scss` to `css/style.css` (with source map) using any Sass compiler, e.g.:
+
+```
+sass scss/style.scss css/style.css
+```
+
+Do not hand-edit `css/style.css` or `css/style.css.map` — they are compiled output and will be overwritten. Always make styling changes in the `scss/` partials.
+
+There is no test runner, linter, or CI config in this repo.
+
+## Architecture
+
+**Pages** (all plain HTML, no templating engine — each page duplicates its own `<head>`, nav bar, and footer):
+- `index.html` — homepage, at repo root
+- `pages/menu.html`, `pages/productos.html`, `pages/nosotros.html`, `pages/ubicaciones.html` — secondary pages, one directory level down, so their asset links use `../` prefixes (`../css/style.css`, `../img/...`) while `index.html` uses unprefixed paths (`css/style.css`, `img/...`). Keep this in mind when copying markup between the root page and `pages/*.html`.
+
+**Styles** (`scss/`): `style.scss` is the single entry point and just imports partials in a fixed cascade order — later partials override earlier ones:
+```
+_general → _elementos → _nav → _display → _texto → _reutilizables → _index → (style.scss's own rules) → _pages → _media
+```
+- `_general.scss` — CSS reset and the `:root` design tokens (CSS custom properties for colors, font sizes) plus `@font-face`.
+- `_elementos.scss` — base element styling (headings, buttons, etc.).
+- `_nav.scss` — nav bar, including the checkbox-hack mobile hamburger menu (see below).
+- `_display.scss` — layout/flex/grid utility classes (`.flex`, `.vflex`, `.flxBetween`, `.flxAlgnCenter`, `.gap20`, `.padding80`, `.espacio30`/`.espacio60` spacers, etc.). These utilities are used extensively in the HTML instead of page-specific classes.
+- `_texto.scss` — typography utility classes (`.fntFonarto`, `.fntAsap`, `.fntArima`, `.txtCenter`, `.txtDestaque`, `.txt22`/`.txt40`/`.txt96`, etc.).
+- `_reutilizables.scss` — small reusable component styles (`.circulo`, `.hero`, `.banner`, `.grid-productos`, `.background-CTA`, `.check-ul`).
+- `_index.scss` — styling specific to the homepage.
+- `_pages.scss` — styling specific to the non-home pages.
+- `_media.scss` — all responsive breakpoints, centralized in one file at the end of the cascade (not colocated with the component styles they adjust). Main breakpoints: `1024px` (general mobile layout), `1366px`/`768px`/`769–1023px` (product grid column counts on `productos.html`/`menu.html`).
+
+Naming conventions English
+
+**Interactivity without JS**: the mobile nav menu is a pure-CSS "checkbox hack" (`<input type="checkbox" id="checkbox_toggle">` + `<label class="hamburger">`, styled in `_nav.scss`). Button actions use inline `onclick="window.location.href='...'"` / `location.href='...'` navigation rather than JS event handlers or an `<a>` tag in some cases — follow this existing pattern for simple navigation actions rather than introducing a script file.
+
+**Assets**: `img/` holds all images/icons (SVG for icons, JPG/PNG for photos), `fonts/` holds the self-hosted `Fonarto` font (`.ttf`, loaded via `@font-face` in `_general.scss`); Arima and Asap Condensed are loaded from Google Fonts in each page's `<head>`.
+
+## Git remotes
+
+- `origin` — `https://github.com/wlecours/fita-frontend.git` (this fork)
+- `upstream` — `https://github.com/eugenisv/PFVillamizar.git` (original project this was forked from)
