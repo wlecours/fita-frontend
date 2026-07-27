@@ -1,0 +1,6 @@
+.git
+.idea
+scss
+Dockerfile
+.dockerignore
+CLAUDE.md
