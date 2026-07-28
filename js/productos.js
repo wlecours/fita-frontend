@@ -1,8 +1,11 @@
 const PAGE_SIZE = 12;
+const CURRENCY_SYMBOLS = { USD: "$", VES: "Bs." };
 
 let currentPage = 0;
+let currentCurrency = "USD";
 
 function renderProduct(product) {
+    const symbol = CURRENCY_SYMBOLS[product.currency] ?? "$";
     return `
         <div>
             <div class="producto flex vflex gap8 centerDiv">
@@ -11,7 +14,7 @@ function renderProduct(product) {
                     <h2 class="txtSubtitulo">${product.name}</h2>
                     <p>${product.description}</p>
                     <div class="flex flxBetween flxBetween">
-                        <p class="subtitulo">${product.price}$</p>
+                        <p class="subtitulo">${symbol} ${product.price}</p>
                         <button class="bttnBolsa"><img src="../img/iconBag.svg" height="18px" width="18px" alt="Añadir a la Bolsa"></button>
                     </div>
                 </div>
@@ -38,8 +41,22 @@ function renderPagination(totalPages) {
     document.getElementById("next-page").addEventListener("click", () => goToPage(currentPage + 1));
 }
 
+function renderCurrencyToggle() {
+    document.getElementById("currency-usd").classList.toggle("active", currentCurrency === "USD");
+    document.getElementById("currency-ves").classList.toggle("active", currentCurrency === "VES");
+}
+
+function setCurrency(currency) {
+    if (currency === currentCurrency) {
+        return;
+    }
+    currentCurrency = currency;
+    renderCurrencyToggle();
+    goToPage(currentPage);
+}
+
 async function loadProducts(page) {
-    const response = await fetch(`${CONFIG.API_URL}/api/products?page=${page}&size=${PAGE_SIZE}`);
+    const response = await fetch(`${CONFIG.API_URL}/api/products?page=${page}&size=${PAGE_SIZE}&currency=${currentCurrency}`);
     if (!response.ok) {
         throw new Error(`Failed to fetch products: ${response.status}`);
     }
@@ -60,4 +77,9 @@ async function goToPage(page) {
     }
 }
 
-document.addEventListener("DOMContentLoaded", () => goToPage(0));
+document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("currency-usd").addEventListener("click", () => setCurrency("USD"));
+    document.getElementById("currency-ves").addEventListener("click", () => setCurrency("VES"));
+    renderCurrencyToggle();
+    goToPage(0);
+});
