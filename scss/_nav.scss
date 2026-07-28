@@ -68,3 +68,47 @@ display: block;
 
 }
 header {position: relative; max-width: 100vw;}
+
+/* CURRENCY SELECTOR */
+.currency-select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-color: var(--color-trans);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath fill='white' d='M5.5 7.5l4.5 5 4.5-5z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    background-size: 11px;
+    color: var(--color-white);
+    border: 1.5px solid var(--color-white);
+    border-radius: 4px;
+    padding: 8px 34px 8px 14px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.currency-select:hover,
+.currency-select:focus {
+    background-color: var(--color-destaque);
+    border-color: var(--color-destaque);
+    box-shadow: 0 0 0 3px rgba(1, 164, 55, 0.25);
+    outline: none;
+}
+
+.currency-select option {
+    color: var(--color-black);
+    background-color: var(--color-white);
+    padding: 10px 14px;
+    font-weight: 600;
+}
+
+.currency-select option:hover,
+.currency-select option:checked {
+    background-color: var(--color-claro);
+    color: var(--color-black);
+}

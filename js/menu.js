@@ -2,7 +2,6 @@ const PAGE_SIZE = 12;
 const CURRENCY_SYMBOLS = { USD: "$", VES: "Bs." };
 
 let currentPage = 0;
-let currentCurrency = "USD";
 
 function renderMenuItem(menuItem) {
     const symbol = CURRENCY_SYMBOLS[menuItem.currency] ?? "$";
@@ -39,22 +38,8 @@ function renderPagination(totalPages) {
     document.getElementById("next-page").addEventListener("click", () => goToPage(currentPage + 1));
 }
 
-function renderCurrencyToggle() {
-    document.getElementById("currency-usd").classList.toggle("active", currentCurrency === "USD");
-    document.getElementById("currency-ves").classList.toggle("active", currentCurrency === "VES");
-}
-
-function setCurrency(currency) {
-    if (currency === currentCurrency) {
-        return;
-    }
-    currentCurrency = currency;
-    renderCurrencyToggle();
-    goToPage(currentPage);
-}
-
 async function loadMenuItems(page) {
-    const response = await fetch(`${CONFIG.API_URL}/api/menu-items?page=${page}&size=${PAGE_SIZE}&currency=${currentCurrency}`);
+    const response = await fetch(`${CONFIG.API_URL}/api/menu-items?page=${page}&size=${PAGE_SIZE}&currency=${getCurrency()}`);
     if (!response.ok) {
         throw new Error(`Failed to fetch menu items: ${response.status}`);
     }
@@ -75,9 +60,5 @@ async function goToPage(page) {
     }
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-    document.getElementById("currency-usd").addEventListener("click", () => setCurrency("USD"));
-    document.getElementById("currency-ves").addEventListener("click", () => setCurrency("VES"));
-    renderCurrencyToggle();
-    goToPage(0);
-});
+document.addEventListener("DOMContentLoaded", () => goToPage(0));
+document.addEventListener("currencychange", () => goToPage(currentPage));

@@ -42,10 +42,11 @@ Naming conventions English
 
 **Interactivity without JS**: the mobile nav menu is a pure-CSS "checkbox hack" (`<input type="checkbox" id="checkbox_toggle">` + `<label class="hamburger">`, styled in `_nav.scss`). Button actions use inline `onclick="window.location.href='...'"` / `location.href='...'` navigation rather than JS event handlers or an `<a>` tag in some cases — follow this existing pattern for simple navigation actions.
 
-**JS (`js/`)**: only used where a page needs live data from the `fita-backend` API, not for general interactivity.
-- `config.js` — defines `CONFIG.API_URL`, the backend base URL (`http://localhost:8080`). Loaded before any page-specific script.
-- `productos.js` (used by `pages/productos.html`) / `menu.js` (used by `pages/menu.html`) — near-identical, independent scripts (no shared module, consistent with the no-build-tool setup): each fetches a paginated page from the backend (`/api/products` / `/api/menu-items`), renders cards into `#productos-grid` / `#menu-grid`, renders prev/next pagination into `#productos-pagination` / `#menu-pagination`, and toggles the response currency (`USD`/`VES`) via `#currency-usd` / `#currency-ves` buttons, passed as a `currency` query param on each fetch.
-- Only `menu.html` and `productos.html` load JS; other pages remain fully static.
+**JS (`js/`)**: loaded via plain `<script>` tags, no shared module system (consistent with the no-build-tool setup) — files coordinate through globals (`CONFIG`, `getCurrency()`) and a `currencychange` `CustomEvent` on `document` rather than imports.
+- `currency.js` — site-wide currency selector. Loaded on **every** page. Persists the chosen currency (`USD`/`VES`) to `localStorage` (`fita-currency` key, default `USD`), syncs the `#currency-select` `<select>` in each page's nav bar on load, and dispatches `currencychange` on `document` when the user changes it. Exposes `getCurrency()`/`setCurrency()` globally for other scripts.
+- `config.js` — defines `CONFIG.API_URL`, the backend base URL (`http://localhost:8080`). Loaded before any page-specific script that calls the API.
+- `productos.js` (used by `pages/productos.html`) / `menu.js` (used by `pages/menu.html`) — near-identical, independent scripts: each fetches a paginated page from the backend (`/api/products` / `/api/menu-items`, with `currency=${getCurrency()}`), renders cards into `#productos-grid` / `#menu-grid`, and renders prev/next pagination into `#productos-pagination` / `#menu-pagination`. Both re-fetch the current page on `currencychange` so switching currency in the nav updates prices immediately without a page reload.
+- Only `menu.html` and `productos.html` load `config.js`/their own script; `currency.js` alone is enough for pages that just need the nav selector to persist a choice.
 
 **Assets**: `img/` holds all images/icons (SVG for icons, JPG/PNG for photos), `fonts/` holds the self-hosted `Fonarto` font (`.ttf`, loaded via `@font-face` in `_general.scss`); Arima and Asap Condensed are loaded from Google Fonts in each page's `<head>`.
 

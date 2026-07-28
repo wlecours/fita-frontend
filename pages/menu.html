@@ -23,20 +23,27 @@
             <!-- Logo -->
             <div><a href="../index.html"><img src="../img/logo-letras-derecha.png" alt="Logo de Fita" height="60px" width=""></a></div>
 
-            <!-- Menu de navegacion -->
-            <ul>
-                <!-- Checkbox para el menú de Hamburguesa -->
-                <input type="checkbox" id="checkbox_toggle" />
-                <label for="checkbox_toggle" class="hamburger">&#9776;</label>
-                <!-- Links de Navegación -->
-                <div class="menu">
-                    <li><a href="../index.html">Inicio</a></li>
-                    <li><a href="nosotros.html">Sobre Nosotros</a></li>
-                    <li><a href="menu.html" class="active">Menú</a></li>
-                    <li><a href="productos.html">Productos</a></li>
-                    <li><a href="ubicaciones.html">Dónde Encontrarnos</a></li>
-                </div>
-            </ul>
+            <!-- Menu de navegacion y selector de moneda -->
+            <div class="flex flxAlgnCenter gap20">
+                <ul>
+                    <!-- Checkbox para el menú de Hamburguesa -->
+                    <input type="checkbox" id="checkbox_toggle" />
+                    <label for="checkbox_toggle" class="hamburger">&#9776;</label>
+                    <!-- Links de Navegación -->
+                    <div class="menu">
+                        <li><a href="../index.html">Inicio</a></li>
+                        <li><a href="nosotros.html">Sobre Nosotros</a></li>
+                        <li><a href="menu.html" class="active">Menú</a></li>
+                        <li><a href="productos.html">Productos</a></li>
+                        <li><a href="ubicaciones.html">Dónde Encontrarnos</a></li>
+                    </div>
+                </ul>
+
+                <select id="currency-select" class="currency-select" aria-label="Moneda">
+                    <option value="USD">USD</option>
+                    <option value="VES">Bs.</option>
+                </select>
+            </div>
           </nav>
         <!-- HERO -->
         <div class="hero banner padding80">
@@ -55,11 +62,6 @@
 
     <main>
         <div class="espacio60"></div>
-
-        <div class="flex flxCenter flxAlgnCenter gap20">
-            <button id="currency-usd">USD</button>
-            <button id="currency-ves">Bs.</button>
-        </div>
 
         <div id="menu-grid" class="grid grid-productos padding80"></div>
 
@@ -89,6 +91,7 @@
           </footer>
 
     <script src="../js/config.js"></script>
+    <script src="../js/currency.js"></script>
     <script src="../js/menu.js"></script>
 </body>
 </html>
