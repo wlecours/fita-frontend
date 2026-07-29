@@ -47,8 +47,56 @@
                             <option value="USD">USD</option>
                             <option value="VES">Bs.</option>
                         </select>
+
+                        <div id="auth-nav" class="auth-nav"></div>
                     </div>
                   </nav>
+
+                  <!-- AUTH MODAL -->
+                  <div id="auth-modal" class="auth-modal-overlay" hidden>
+                    <div class="auth-modal" role="dialog" aria-modal="true" aria-labelledby="auth-modal-title">
+                      <button type="button" class="auth-modal-close" id="auth-modal-close" aria-label="Cerrar">&times;</button>
+
+                      <div id="auth-login-view" class="auth-view">
+                        <h2 id="auth-modal-title">Iniciar Sesión</h2>
+                        <form id="auth-login-form" class="auth-form">
+                          <label>Correo Electrónico
+                            <input type="email" name="email" required>
+                          </label>
+                          <label>Contraseña
+                            <input type="password" name="password" required>
+                          </label>
+                          <p class="auth-error" id="auth-login-error"></p>
+                          <button type="submit" class="auth-submit-btn">Entrar</button>
+                        </form>
+                        <p class="auth-switch">¿No tienes cuenta? <button type="button" class="auth-link-btn" id="auth-show-register">Regístrate</button></p>
+                      </div>
+
+                      <div id="auth-register-view" class="auth-view" hidden>
+                        <h2>Crear Cuenta</h2>
+                        <form id="auth-register-form" class="auth-form">
+                          <label>Correo Electrónico
+                            <input type="email" name="email" required>
+                          </label>
+                          <label>Nombre y Apellido
+                            <input type="text" name="name" required>
+                          </label>
+                          <label>Contraseña
+                            <input type="password" name="password" minlength="8" required>
+                          </label>
+                          <label>Teléfono
+                            <input type="tel" name="phone" inputmode="numeric" pattern="\+?[0-9]*" title="Solo números" required>
+                          </label>
+                          <label>Dirección (opcional)
+                            <input type="text" name="address">
+                          </label>
+                          <p class="auth-error" id="auth-register-error"></p>
+                          <button type="submit" class="auth-submit-btn">Crear Cuenta</button>
+                        </form>
+                        <p class="auth-switch">¿Ya tienes cuenta? <button type="button" class="auth-link-btn" id="auth-show-login">Inicia Sesión</button></p>
+                      </div>
+                    </div>
+                  </div>
             </div>
             
             <div class="row hero banner padding80">
@@ -150,6 +198,8 @@
           </footer>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+    <script src="../js/config.js"></script>
     <script src="../js/currency.js"></script>
+    <script src="../js/auth.js"></script>
 </body>
 </html>
