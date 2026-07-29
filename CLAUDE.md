@@ -6,6 +6,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Fita is a static, multi-page marketing/e-commerce front end (Spanish-language, healthy food brand) built with plain HTML, SCSS, and vanilla JS. There is **no package.json and no build tool** (no npm, webpack, Vite, etc.) — JS files are loaded directly via `<script>` tags, no bundler or transpilation. The `.idea/` project files indicate this is developed in a JetBrains IDE, most likely relying on its built-in SCSS file watcher to compile Sass on save.
 
+Per the Trello board ("Fita"), this site is growing from a catalog into a full ordering flow: guest-or-logged-in cart, a checkout page collecting delivery/pickup choice, manual payment details (Pago Móvil, Transferencia, PayPal, Binance, Zinli), and the day's exchange rate; customer accounts with signup and purchase history; and an admin view (item/stock CRUD, order management, exchange-rate control) reachable only via a separate, non-obvious URL rather than a nav link. Keep this trajectory in mind for structural decisions — e.g. the `currency.js` global-selector pattern (localStorage + `currencychange` CustomEvent) is the kind of cross-page mechanism the cart/login state will likely need too, given there's no shared JS module system to reach for instead.
+
 ## Build / compile
 
 There are no npm scripts to run. To regenerate CSS after editing SCSS, compile `scss/style.scss` to `css/style.css` (with source map) using any Sass compiler, e.g.:
