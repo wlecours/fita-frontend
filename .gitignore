@@ -116,3 +116,6 @@ fabric.properties
 .idea/fita-frontend.iml
 .idea/misc.xml
 .idea/modules.xml
+
+# Generated CSS source maps
+css/*.map

@@ -319,7 +319,9 @@ header {
 
 .auth-account-menu-item {
   appearance: none;
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 10px;
   width: 100%;
   background-color: transparent;
   border: none;
@@ -333,6 +335,13 @@ header {
   padding: 10px 16px;
   cursor: pointer;
   transition: background-color 0.15s ease;
+}
+
+.auth-account-menu-icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  color: rgba(33, 41, 34, 0.6);
 }
 
 .auth-account-menu-item:hover {
