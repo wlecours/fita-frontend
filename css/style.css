@@ -1052,14 +1052,17 @@ header {
   font-size: var(--fntSize-txtPeq);
 }
 
-.admin-table {
-  width: 100%;
-  table-layout: fixed;
-  border-collapse: collapse;
+.admin-table-card {
   background-color: var(--color-white);
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+}
+
+.admin-table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
 }
 
 .admin-table th,
@@ -1092,17 +1095,17 @@ header {
 
 .admin-table th:nth-child(3),
 .admin-table td:nth-child(3) {
-  width: 14%;
+  width: 12%;
 }
 
 .admin-table th:nth-child(4),
 .admin-table td:nth-child(4) {
-  width: 22%;
+  width: 24%;
 }
 
 .admin-table th:last-child,
 .admin-table td:last-child {
-  width: 120px;
+  width: 16%;
   text-align: center;
   white-space: normal;
 }
@@ -1156,6 +1159,7 @@ header {
   font-family: inherit;
   font-size: 14px;
   width: 100%;
+  min-width: 0;
   padding: 6px 8px;
   border: 1.5px solid var(--color-destaque);
   border-radius: 6px;
@@ -1180,13 +1184,15 @@ header {
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 16px;
-  margin-top: 20px;
   padding: 14px 20px;
-  background-color: var(--color-white);
-  border: 1px solid rgba(33, 41, 34, 0.12);
-  border-radius: 10px;
+  border-top: 1px solid rgba(33, 41, 34, 0.1);
   font-family: "Arima", cursive;
   color: var(--color-black);
+}
+
+#admin-products-pagination:empty,
+#admin-menu-items-pagination:empty {
+  display: none;
 }
 
 .admin-pagination-nav {
