@@ -86,26 +86,10 @@
             </div>
 
             <section class="admin-tab-panel" id="admin-tab-products" data-tab-panel="products">
-                <form id="admin-products-form" class="admin-form" data-kind="products">
-                    <input type="hidden" name="id" value="">
-                    <label>Nombre
-                        <input type="text" name="name" required>
-                    </label>
-                    <label>Descripción
-                        <input type="text" name="description">
-                    </label>
-                    <label>Precio (USD)
-                        <input type="number" name="price" min="0" step="0.01" required>
-                    </label>
-                    <label>Imagen (nombre de archivo)
-                        <input type="text" name="imageUrl" placeholder="ejemplo.jpg">
-                    </label>
-                    <div class="admin-form-actions">
-                        <button type="submit" class="admin-submit-btn">Agregar Producto</button>
-                        <button type="button" class="admin-cancel-btn" hidden>Cancelar</button>
-                    </div>
-                    <p class="admin-form-error"></p>
-                </form>
+                <div class="admin-table-toolbar">
+                    <button type="button" class="admin-add-btn" data-kind="products">+ Agregar Producto</button>
+                    <p class="admin-form-error" id="admin-products-error"></p>
+                </div>
 
                 <table class="admin-table">
                     <thead>
@@ -119,29 +103,14 @@
                     </thead>
                     <tbody id="admin-products-body"></tbody>
                 </table>
+                <div id="admin-products-pagination" class="flex flxCenter flxAlgnCenter gap20"></div>
             </section>
 
             <section class="admin-tab-panel" id="admin-tab-menu-items" data-tab-panel="menu-items" hidden>
-                <form id="admin-menu-items-form" class="admin-form" data-kind="menu-items">
-                    <input type="hidden" name="id" value="">
-                    <label>Nombre
-                        <input type="text" name="name" required>
-                    </label>
-                    <label>Descripción
-                        <input type="text" name="description">
-                    </label>
-                    <label>Precio (USD)
-                        <input type="number" name="price" min="0" step="0.01" required>
-                    </label>
-                    <label>Imagen (nombre de archivo)
-                        <input type="text" name="imageUrl" placeholder="ejemplo.jpg">
-                    </label>
-                    <div class="admin-form-actions">
-                        <button type="submit" class="admin-submit-btn">Agregar Ítem</button>
-                        <button type="button" class="admin-cancel-btn" hidden>Cancelar</button>
-                    </div>
-                    <p class="admin-form-error"></p>
-                </form>
+                <div class="admin-table-toolbar">
+                    <button type="button" class="admin-add-btn" data-kind="menu-items">+ Agregar Ítem</button>
+                    <p class="admin-form-error" id="admin-menu-items-error"></p>
+                </div>
 
                 <table class="admin-table">
                     <thead>
@@ -155,6 +124,7 @@
                     </thead>
                     <tbody id="admin-menu-items-body"></tbody>
                 </table>
+                <div id="admin-menu-items-pagination" class="flex flxCenter flxAlgnCenter gap20"></div>
             </section>
 
             <section class="admin-tab-panel" id="admin-tab-orders" data-tab-panel="orders" hidden>
