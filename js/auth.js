@@ -55,6 +55,31 @@ function closeAuthModal() {
     setAuthError("auth-register-error", "");
 }
 
+function closeAccountMenu() {
+    document.getElementById("auth-account-menu")?.setAttribute("hidden", "");
+    document.getElementById("auth-account-btn")?.setAttribute("aria-expanded", "false");
+}
+
+function toggleAccountMenu() {
+    const menu = document.getElementById("auth-account-menu");
+    const btn = document.getElementById("auth-account-btn");
+    if (!menu || !btn) {
+        return;
+    }
+    if (menu.hasAttribute("hidden")) {
+        menu.removeAttribute("hidden");
+        btn.setAttribute("aria-expanded", "true");
+    } else {
+        closeAccountMenu();
+    }
+}
+
+function escapeHtml(value) {
+    const div = document.createElement("div");
+    div.textContent = value ?? "";
+    return div.innerHTML;
+}
+
 function renderAuthNav() {
     const container = document.getElementById("auth-nav");
     if (!container) {
@@ -63,10 +88,32 @@ function renderAuthNav() {
     const auth = getAuth();
     if (auth) {
         container.innerHTML = `
-            <span class="auth-account-name">Hola, ${auth.account.name}</span>
-            <button type="button" id="auth-logout-btn" class="auth-logout-btn">Cerrar Sesión</button>
+            <div class="auth-account">
+                <button type="button" id="auth-account-btn" class="auth-account-btn" aria-haspopup="true" aria-expanded="false" aria-label="Cuenta">
+                    <svg class="auth-account-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                        <path d="M12 12c2.761 0 5-2.239 5-5s-2.239-5-5-5-5 2.239-5 5 2.239 5 5 5zm0 2c-3.333 0-10 1.667-10 5v3h20v-3c0-3.333-6.667-5-10-5z"></path>
+                    </svg>
+                </button>
+                <div class="auth-account-menu" id="auth-account-menu" hidden>
+                    <div class="auth-account-header">
+                        <p class="auth-account-header-name">${escapeHtml(auth.account.name)}</p>
+                        <p class="auth-account-header-email">${escapeHtml(auth.account.email)}</p>
+                    </div>
+                    <div class="auth-account-menu-divider"></div>
+                    <button type="button" class="auth-account-menu-item" id="auth-settings-btn">Configuración</button>
+                    <button type="button" class="auth-account-menu-item" id="auth-logout-btn">Cerrar Sesión</button>
+                </div>
+            </div>
         `;
-        document.getElementById("auth-logout-btn").addEventListener("click", clearAuth);
+        document.getElementById("auth-account-btn").addEventListener("click", (event) => {
+            event.stopPropagation();
+            toggleAccountMenu();
+        });
+        document.getElementById("auth-settings-btn").addEventListener("click", closeAccountMenu);
+        document.getElementById("auth-logout-btn").addEventListener("click", () => {
+            closeAccountMenu();
+            clearAuth();
+        });
     } else {
         container.innerHTML = `<button type="button" id="auth-open-btn" class="auth-trigger-btn">Iniciar Sesión</button>`;
         document.getElementById("auth-open-btn").addEventListener("click", openAuthModal);
@@ -109,6 +156,17 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     document.getElementById("auth-show-register")?.addEventListener("click", () => showAuthView("auth-register-view", "auth-login-view"));
     document.getElementById("auth-show-login")?.addEventListener("click", () => showAuthView("auth-login-view", "auth-register-view"));
+
+    document.addEventListener("click", (event) => {
+        const menu = document.getElementById("auth-account-menu");
+        const btn = document.getElementById("auth-account-btn");
+        if (!menu || menu.hasAttribute("hidden")) {
+            return;
+        }
+        if (!menu.contains(event.target) && event.target !== btn) {
+            closeAccountMenu();
+        }
+    });
 
     document.getElementById("auth-login-form")?.addEventListener("submit", (event) =>
         handleAuthSubmit(event, "/api/accounts/login", "auth-login-error", (form) => ({
