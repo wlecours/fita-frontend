@@ -149,29 +149,8 @@
     font-weight: 700;
 }
 
-.admin-table th:nth-child(1),
-.admin-table td:nth-child(1) {
-    width: 20%;
-}
-
-.admin-table th:nth-child(2),
-.admin-table td:nth-child(2) {
-    width: 28%;
-}
-
-.admin-table th:nth-child(3),
-.admin-table td:nth-child(3) {
-    width: 12%;
-}
-
-.admin-table th:nth-child(4),
-.admin-table td:nth-child(4) {
-    width: 24%;
-}
-
 .admin-table th:last-child,
 .admin-table td:last-child {
-    width: 16%;
     text-align: center;
     white-space: normal;
 }
