@@ -943,6 +943,45 @@ header {
   margin-bottom: 20px;
 }
 
+.admin-tabs {
+  display: flex;
+  gap: 8px;
+  border-bottom: 2px solid rgba(33, 41, 34, 0.1);
+  margin-bottom: 24px;
+}
+
+.admin-tab-btn {
+  background-color: transparent;
+  color: var(--color-black);
+  box-shadow: none;
+  border-radius: 8px 8px 0 0;
+  padding: 12px 20px;
+  font-size: 15px;
+  border-bottom: 3px solid transparent;
+}
+
+.admin-tab-btn:hover {
+  background-color: rgba(1, 164, 55, 0.08);
+  color: var(--color-black);
+}
+
+.admin-tab-btn.active {
+  color: var(--color-destaque);
+  border-bottom-color: var(--color-destaque);
+}
+
+.admin-tab-panel[hidden] {
+  display: none;
+}
+
+.admin-placeholder {
+  color: rgba(33, 41, 34, 0.6);
+  font-family: "Arima", cursive;
+  padding: 60px 0;
+  text-align: center;
+  font-size: var(--fntSize-txtNormal);
+}
+
 .admin-section {
   margin-top: 20px;
 }

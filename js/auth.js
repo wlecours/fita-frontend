@@ -81,7 +81,7 @@ function escapeHtml(value) {
 }
 
 function adminPanelUrl() {
-    return window.location.pathname.includes("/pages/") ? "oficina-fita.html" : "pages/oficina-fita.html";
+    return window.location.pathname.includes("/pages/") ? "administracion-fita.html" : "pages/administracion-fita.html";
 }
 
 function renderAuthNav() {

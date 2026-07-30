@@ -78,8 +78,14 @@
         <div id="admin-content" class="admin-content" hidden>
             <h1>Panel de Administración</h1>
 
-            <section class="admin-section">
-                <h2>Productos</h2>
+            <div class="admin-tabs" role="tablist">
+                <button type="button" class="admin-tab-btn active" data-tab="products" role="tab" aria-selected="true">Productos</button>
+                <button type="button" class="admin-tab-btn" data-tab="menu-items" role="tab" aria-selected="false">Menú</button>
+                <button type="button" class="admin-tab-btn" data-tab="orders" role="tab" aria-selected="false">Pedidos</button>
+                <button type="button" class="admin-tab-btn" data-tab="users" role="tab" aria-selected="false">Usuarios</button>
+            </div>
+
+            <section class="admin-tab-panel" id="admin-tab-products" data-tab-panel="products">
                 <form id="admin-products-form" class="admin-form" data-kind="products">
                     <input type="hidden" name="id" value="">
                     <label>Nombre
@@ -115,10 +121,7 @@
                 </table>
             </section>
 
-            <div class="espacio60"></div>
-
-            <section class="admin-section">
-                <h2>Menú</h2>
+            <section class="admin-tab-panel" id="admin-tab-menu-items" data-tab-panel="menu-items" hidden>
                 <form id="admin-menu-items-form" class="admin-form" data-kind="menu-items">
                     <input type="hidden" name="id" value="">
                     <label>Nombre
@@ -152,6 +155,14 @@
                     </thead>
                     <tbody id="admin-menu-items-body"></tbody>
                 </table>
+            </section>
+
+            <section class="admin-tab-panel" id="admin-tab-orders" data-tab-panel="orders" hidden>
+                <p class="admin-placeholder">La gestión de pedidos estará disponible próximamente.</p>
+            </section>
+
+            <section class="admin-tab-panel" id="admin-tab-users" data-tab-panel="users" hidden>
+                <p class="admin-placeholder">La gestión de usuarios estará disponible próximamente.</p>
             </section>
         </div>
 

@@ -5,13 +5,15 @@ const CATALOGS = {
         listPath: "/api/products",
         adminPath: "/api/admin/products",
         tableBodyId: "admin-products-body",
-        formId: "admin-products-form"
+        formId: "admin-products-form",
+        loaded: false
     },
     "menu-items": {
         listPath: "/api/menu-items",
         adminPath: "/api/admin/menu-items",
         tableBodyId: "admin-menu-items-body",
-        formId: "admin-menu-items-form"
+        formId: "admin-menu-items-form",
+        loaded: false
     }
 };
 
@@ -57,11 +59,15 @@ function renderRow(kind, item) {
     `;
 }
 
-async function loadCatalog(kind) {
-    const { listPath, tableBodyId } = CATALOGS[kind];
-    const tbody = document.getElementById(tableBodyId);
-    const items = await fetchAllItems(listPath);
+async function loadCatalog(kind, { force = false } = {}) {
+    const catalog = CATALOGS[kind];
+    if (!catalog || (catalog.loaded && !force)) {
+        return;
+    }
+    const tbody = document.getElementById(catalog.tableBodyId);
+    const items = await fetchAllItems(catalog.listPath);
     tbody.innerHTML = items.map(item => renderRow(kind, item)).join("");
+    catalog.loaded = true;
 }
 
 function getForm(kind) {
@@ -119,7 +125,7 @@ async function handleFormSubmit(kind, event) {
             return;
         }
         resetForm(kind);
-        await loadCatalog(kind);
+        await loadCatalog(kind, { force: true });
     } catch (e) {
         errorEl.textContent = "No se pudo conectar con el servidor";
     }
@@ -138,7 +144,7 @@ async function handleDelete(kind, id) {
         if (!response.ok && response.status !== 204) {
             throw new Error(`Failed to delete: ${response.status}`);
         }
-        await loadCatalog(kind);
+        await loadCatalog(kind, { force: true });
     } catch (e) {
         alert("No se pudo eliminar el elemento");
     }
@@ -164,7 +170,23 @@ function wireCatalog(kind) {
     });
 }
 
-async function renderAdminGate() {
+function activeTab() {
+    return document.querySelector(".admin-tab-btn.active")?.dataset.tab ?? "products";
+}
+
+function switchTab(tab) {
+    document.querySelectorAll(".admin-tab-btn").forEach((btn) => {
+        const active = btn.dataset.tab === tab;
+        btn.classList.toggle("active", active);
+        btn.setAttribute("aria-selected", String(active));
+    });
+    document.querySelectorAll(".admin-tab-panel").forEach((panel) => {
+        panel.hidden = panel.dataset.tabPanel !== tab;
+    });
+    loadCatalog(tab).catch((e) => console.error(e));
+}
+
+function renderAdminGate() {
     const gate = document.getElementById("admin-gate");
     const content = document.getElementById("admin-content");
     if (!gate || !content) {
@@ -177,20 +199,15 @@ async function renderAdminGate() {
     }
     gate.hidden = true;
     content.hidden = false;
-    if (content.dataset.loaded === "true") {
-        return;
-    }
-    content.dataset.loaded = "true";
-    try {
-        await Promise.all([loadCatalog("products"), loadCatalog("menu-items")]);
-    } catch (e) {
-        console.error(e);
-    }
+    loadCatalog(activeTab()).catch((e) => console.error(e));
 }
 
 document.addEventListener("DOMContentLoaded", () => {
     wireCatalog("products");
     wireCatalog("menu-items");
+    document.querySelectorAll(".admin-tab-btn").forEach((btn) => {
+        btn.addEventListener("click", () => switchTab(btn.dataset.tab));
+    });
     renderAdminGate();
 });
 
