@@ -337,10 +337,18 @@ header {
   transition: background-color 0.15s ease;
 }
 
+.auth-account-menu-icon-wrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
 .auth-account-menu-icon {
   width: 18px;
   height: 18px;
-  flex-shrink: 0;
   color: rgba(33, 41, 34, 0.6);
 }
 
