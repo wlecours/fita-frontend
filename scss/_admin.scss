@@ -112,14 +112,29 @@
     font-weight: 700;
 }
 
+.admin-table th:nth-child(1),
+.admin-table td:nth-child(1) {
+    width: 20%;
+}
+
+.admin-table th:nth-child(2),
+.admin-table td:nth-child(2) {
+    width: 28%;
+}
+
 .admin-table th:nth-child(3),
 .admin-table td:nth-child(3) {
-    width: 12%;
+    width: 14%;
+}
+
+.admin-table th:nth-child(4),
+.admin-table td:nth-child(4) {
+    width: 22%;
 }
 
 .admin-table th:last-child,
 .admin-table td:last-child {
-    width: 96px;
+    width: 120px;
     text-align: center;
     white-space: normal;
 }
