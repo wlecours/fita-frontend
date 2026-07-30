@@ -6,7 +6,8 @@ const CATALOGS = {
         paginationId: "admin-products-pagination",
         loaded: false,
         page: 0,
-        pageSize: 10
+        pageSize: 10,
+        search: ""
     },
     "menu-items": {
         listPath: "/api/menu-items",
@@ -15,7 +16,8 @@ const CATALOGS = {
         paginationId: "admin-menu-items-pagination",
         loaded: false,
         page: 0,
-        pageSize: 10
+        pageSize: 10,
+        search: ""
     }
 };
 
@@ -133,7 +135,11 @@ async function loadCatalogPage(kind, page) {
         return;
     }
     const catalog = CATALOGS[kind];
-    const response = await fetch(`${CONFIG.API_URL}${catalog.listPath}?page=${page}&size=${catalog.pageSize}&currency=USD`);
+    const params = new URLSearchParams({ page, size: catalog.pageSize, currency: "USD" });
+    if (catalog.search) {
+        params.set("search", catalog.search);
+    }
+    const response = await fetch(`${CONFIG.API_URL}${catalog.listPath}?${params.toString()}`);
     if (!response.ok) {
         throw new Error(`Failed to fetch ${catalog.listPath}: ${response.status}`);
     }
@@ -312,6 +318,17 @@ document.addEventListener("DOMContentLoaded", () => {
             }
             tbody.insertAdjacentHTML("afterbegin", renderNewRow(kind));
             tbody.querySelector(".admin-row-new input[name='name']").focus();
+        });
+    });
+    const searchDebounceTimers = {};
+    document.querySelectorAll(".admin-search-input").forEach((input) => {
+        input.addEventListener("input", () => {
+            const kind = input.dataset.kind;
+            clearTimeout(searchDebounceTimers[kind]);
+            searchDebounceTimers[kind] = setTimeout(() => {
+                CATALOGS[kind].search = input.value.trim();
+                loadCatalogPage(kind, 0).catch((e) => console.error(e));
+            }, 150);
         });
     });
     renderAdminGate();
