@@ -80,6 +80,10 @@ function escapeHtml(value) {
     return div.innerHTML;
 }
 
+function adminPanelUrl() {
+    return window.location.pathname.includes("/pages/") ? "oficina-fita.html" : "pages/oficina-fita.html";
+}
+
 function renderAuthNav() {
     const container = document.getElementById("auth-nav");
     if (!container) {
@@ -107,6 +111,17 @@ function renderAuthNav() {
                         </div>
                     </div>
                     <div class="auth-account-menu-divider"></div>
+                    ${auth.account.role === "ADMIN" ? `
+                    <button type="button" class="auth-account-menu-item" id="auth-admin-btn">
+                        <span class="auth-account-menu-icon-wrap">
+                            <svg class="auth-account-menu-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                                <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"></path>
+                            </svg>
+                        </span>
+                        <span>Panel de Administración</span>
+                    </button>
+                    <div class="auth-account-menu-divider"></div>
+                    ` : ""}
                     <button type="button" class="auth-account-menu-item" id="auth-settings-btn">
                         <span class="auth-account-menu-icon-wrap">
                             <svg class="auth-account-menu-icon" viewBox="0 0 512 512" fill="currentColor" aria-hidden="true">
@@ -129,6 +144,10 @@ function renderAuthNav() {
         document.getElementById("auth-account-btn").addEventListener("click", (event) => {
             event.stopPropagation();
             toggleAccountMenu();
+        });
+        document.getElementById("auth-admin-btn")?.addEventListener("click", () => {
+            closeAccountMenu();
+            window.location.href = adminPanelUrl();
         });
         document.getElementById("auth-settings-btn").addEventListener("click", closeAccountMenu);
         document.getElementById("auth-logout-btn").addEventListener("click", () => {

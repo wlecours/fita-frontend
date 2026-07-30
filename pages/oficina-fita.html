@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración - Fita</title>
+    <link rel="icon" href="../img/Logo.ico" type="image/x-icon">
+    <link rel="stylesheet" href="../css/style.css">
+    <meta name="robots" content="noindex, nofollow">
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Arima:wght@100;200;300;400;500;600;700&family=Asap+Condensed:wght@200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <nav class="navBar fntAsap allWidth flxBetween flxAlgnCenter">
+            <div><a href="../index.html"><img src="../img/logo-letras-derecha.png" alt="Logo de Fita" height="60px"></a></div>
+            <div class="flex flxAlgnCenter gap20">
+                <div id="auth-nav" class="auth-nav"></div>
+            </div>
+        </nav>
+
+        <!-- AUTH MODAL -->
+        <div id="auth-modal" class="auth-modal-overlay" hidden>
+            <div class="auth-modal" role="dialog" aria-modal="true" aria-labelledby="auth-modal-title">
+                <button type="button" class="auth-modal-close" id="auth-modal-close" aria-label="Cerrar">&times;</button>
+
+                <div id="auth-login-view" class="auth-view">
+                    <h2 id="auth-modal-title">Iniciar Sesión</h2>
+                    <form id="auth-login-form" class="auth-form">
+                        <label>Correo Electrónico
+                            <input type="email" name="email" required>
+                        </label>
+                        <label>Contraseña
+                            <input type="password" name="password" required>
+                        </label>
+                        <p class="auth-error" id="auth-login-error"></p>
+                        <button type="submit" class="auth-submit-btn">Entrar</button>
+                    </form>
+                </div>
+
+                <div id="auth-register-view" class="auth-view" hidden>
+                    <h2>Crear Cuenta</h2>
+                    <form id="auth-register-form" class="auth-form">
+                        <label>Correo Electrónico
+                            <input type="email" name="email" required>
+                        </label>
+                        <label>Nombre y Apellido
+                            <input type="text" name="name" required>
+                        </label>
+                        <label>Contraseña
+                            <input type="password" name="password" minlength="8" required>
+                        </label>
+                        <label>Teléfono
+                            <input type="tel" name="phone" inputmode="numeric" pattern="\+?[0-9]*" title="Solo números" required>
+                        </label>
+                        <label>Dirección (opcional)
+                            <input type="text" name="address">
+                        </label>
+                        <p class="auth-error" id="auth-register-error"></p>
+                        <button type="submit" class="auth-submit-btn">Crear Cuenta</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="padding80">
+        <div class="espacio60"></div>
+
+        <div id="admin-gate" class="admin-gate">
+            <h1>Panel de Administración</h1>
+            <p>Inicia sesión con una cuenta de administrador para continuar.</p>
+        </div>
+
+        <div id="admin-content" class="admin-content" hidden>
+            <h1>Panel de Administración</h1>
+
+            <section class="admin-section">
+                <h2>Productos</h2>
+                <form id="admin-products-form" class="admin-form" data-kind="products">
+                    <input type="hidden" name="id" value="">
+                    <label>Nombre
+                        <input type="text" name="name" required>
+                    </label>
+                    <label>Descripción
+                        <input type="text" name="description">
+                    </label>
+                    <label>Precio (USD)
+                        <input type="number" name="price" min="0" step="0.01" required>
+                    </label>
+                    <label>Imagen (nombre de archivo)
+                        <input type="text" name="imageUrl" placeholder="ejemplo.jpg">
+                    </label>
+                    <div class="admin-form-actions">
+                        <button type="submit" class="admin-submit-btn">Agregar Producto</button>
+                        <button type="button" class="admin-cancel-btn" hidden>Cancelar</button>
+                    </div>
+                    <p class="admin-form-error"></p>
+                </form>
+
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Descripción</th>
+                            <th>Precio</th>
+                            <th>Imagen</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="admin-products-body"></tbody>
+                </table>
+            </section>
+
+            <div class="espacio60"></div>
+
+            <section class="admin-section">
+                <h2>Menú</h2>
+                <form id="admin-menu-items-form" class="admin-form" data-kind="menu-items">
+                    <input type="hidden" name="id" value="">
+                    <label>Nombre
+                        <input type="text" name="name" required>
+                    </label>
+                    <label>Descripción
+                        <input type="text" name="description">
+                    </label>
+                    <label>Precio (USD)
+                        <input type="number" name="price" min="0" step="0.01" required>
+                    </label>
+                    <label>Imagen (nombre de archivo)
+                        <input type="text" name="imageUrl" placeholder="ejemplo.jpg">
+                    </label>
+                    <div class="admin-form-actions">
+                        <button type="submit" class="admin-submit-btn">Agregar Ítem</button>
+                        <button type="button" class="admin-cancel-btn" hidden>Cancelar</button>
+                    </div>
+                    <p class="admin-form-error"></p>
+                </form>
+
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Descripción</th>
+                            <th>Precio</th>
+                            <th>Imagen</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="admin-menu-items-body"></tbody>
+                </table>
+            </section>
+        </div>
+
+        <div class="espacio60"></div>
+    </main>
+
+    <script src="../js/config.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/admin.js"></script>
+</body>
+</html>
