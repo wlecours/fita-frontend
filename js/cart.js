@@ -189,6 +189,23 @@ function renderCartBadge() {
     badge.hidden = count === 0;
 }
 
+function bumpCartBadge() {
+    const badge = document.getElementById("cart-badge");
+    if (!badge) {
+        return;
+    }
+    badge.classList.remove("cart-badge-bump");
+    void badge.offsetWidth;
+    badge.classList.add("cart-badge-bump");
+}
+
+function pulseAddButton(button) {
+    button.classList.remove("add-to-cart-pulse");
+    void button.offsetWidth;
+    button.classList.add("add-to-cart-pulse");
+    button.addEventListener("animationend", () => button.classList.remove("add-to-cart-pulse"), { once: true });
+}
+
 function closeCartPanel() {
     cartPanelOpen = false;
     document.getElementById("cart-panel")?.setAttribute("hidden", "");
@@ -231,7 +248,7 @@ function renderCartPanelItems() {
                 <p class="cart-item-name">${escapeHtml(item.name)}</p>
                 <p class="cart-item-price">${symbol} ${item.price.toFixed(2)}</p>
                 <div class="cart-item-qty">
-                    <button type="button" class="cart-qty-btn cart-qty-decrease" aria-label="Disminuir cantidad">&minus;</button>
+                    <button type="button" class="cart-qty-btn cart-qty-decrease" aria-label="Disminuir cantidad" ${item.quantity <= 1 ? "disabled" : ""}>&minus;</button>
                     <span class="cart-qty-value">${item.quantity}</span>
                     <button type="button" class="cart-qty-btn cart-qty-increase" aria-label="Aumentar cantidad">&plus;</button>
                 </div>
@@ -293,6 +310,9 @@ function renderCartNav() {
         if (event.target.closest(".cart-qty-increase")) {
             await setCartItemQuantity(key, catalogType, itemId, currentQuantity + 1);
         } else if (event.target.closest(".cart-qty-decrease")) {
+            if (currentQuantity <= 1) {
+                return;
+            }
             await setCartItemQuantity(key, catalogType, itemId, currentQuantity - 1);
         } else if (event.target.closest(".cart-remove-btn")) {
             await removeCartItem(key, catalogType, itemId);
@@ -324,6 +344,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const itemId = Number(addBtn.dataset.itemId);
         try {
             await addToCart(catalogType, itemId, 1);
+            pulseAddButton(addBtn);
+            bumpCartBadge();
         } catch (e) {
             console.error(e);
         }
