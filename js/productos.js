@@ -14,7 +14,7 @@ function renderProduct(product) {
                     <p>${product.description}</p>
                     <div class="flex flxBetween flxBetween">
                         <p class="subtitulo">${symbol} ${product.price}</p>
-                        <button class="bttnBolsa"><img src="../img/iconBag.svg" height="18px" width="18px" alt="Añadir a la Bolsa"></button>
+                        <button class="bttnBolsa" data-catalog-type="PRODUCT" data-item-id="${product.id}"><img src="../img/iconBag.svg" height="18px" width="18px" alt="Añadir a la Bolsa"></button>
                     </div>
                 </div>
             </div>

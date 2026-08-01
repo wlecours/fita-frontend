@@ -13,7 +13,7 @@ function renderMenuItem(menuItem) {
                     <h3>${menuItem.name}</h3>
                     <p class="txtSubtitulo">${symbol} ${menuItem.price}</p>
                     <p>${menuItem.description}</p>
-                    <button class="addCarrito"><img src="../img/iconBag.svg"> Agregar al carrito</button>
+                    <button class="addCarrito" data-catalog-type="MENU" data-item-id="${menuItem.id}"><img src="../img/iconBag.svg"> Agregar al carrito</button>
                 </div>
             </div>
         </div>
