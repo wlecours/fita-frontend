@@ -1,5 +1,4 @@
 const CART_GUEST_KEY = "fita-cart-guest";
-const GUEST_CART_TTL_MS = 24 * 60 * 60 * 1000;
 const CATALOG_LABELS = { PRODUCT: "Producto", MENU: "Menú" };
 
 let cartView = { items: [], total: 0, currency: "USD" };
@@ -19,12 +18,8 @@ function readGuestCartItems() {
         return [];
     }
     try {
-        const data = JSON.parse(raw);
-        if (!data.expiresAt || Date.now() > data.expiresAt || !Array.isArray(data.items)) {
-            localStorage.removeItem(CART_GUEST_KEY);
-            return [];
-        }
-        return data.items;
+        const items = JSON.parse(raw);
+        return Array.isArray(items) ? items : [];
     } catch (e) {
         return [];
     }
@@ -35,11 +30,7 @@ function writeGuestCartItems(items) {
         localStorage.removeItem(CART_GUEST_KEY);
         return;
     }
-    localStorage.setItem(CART_GUEST_KEY, JSON.stringify({ items, expiresAt: Date.now() + GUEST_CART_TTL_MS }));
-}
-
-function clearGuestCart() {
-    localStorage.removeItem(CART_GUEST_KEY);
+    localStorage.setItem(CART_GUEST_KEY, JSON.stringify(items));
 }
 
 async function apiCartRequest(path, options = {}) {
