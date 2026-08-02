@@ -22,6 +22,33 @@ function clearAuth() {
     document.dispatchEvent(new CustomEvent("authchange", { detail: { auth: null } }));
 }
 
+async function apiRequest(path, options = {}) {
+    const auth = getAuth();
+    let response;
+    try {
+        response = await fetch(`${CONFIG.API_URL}${path}`, {
+            ...options,
+            headers: {
+                "Content-Type": "application/json",
+                ...(auth ? { Authorization: `Bearer ${auth.token}` } : {}),
+                ...(options.headers || {})
+            }
+        });
+    } catch (e) {
+        throw new Error("No se pudo conectar con el servidor");
+    }
+    let data = null;
+    try {
+        data = await response.json();
+    } catch (e) {
+        data = null;
+    }
+    if (!response.ok) {
+        throw new Error(data?.message || "Ocurrió un error, intenta de nuevo");
+    }
+    return data;
+}
+
 function setAuthError(elementId, message) {
     const el = document.getElementById(elementId);
     if (el) {
@@ -81,7 +108,7 @@ function escapeHtml(value) {
 }
 
 function adminPanelUrl() {
-    return window.location.pathname.includes("/pages/") ? "administracion-fita.html" : "pages/administracion-fita.html";
+    return pagePath("administracion-fita.html");
 }
 
 function renderAuthNav() {
@@ -164,20 +191,14 @@ async function handleAuthSubmit(event, url, errorElementId, buildPayload) {
     event.preventDefault();
     setAuthError(errorElementId, "");
     try {
-        const response = await fetch(`${CONFIG.API_URL}${url}`, {
+        const data = await apiRequest(url, {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
             body: JSON.stringify(buildPayload(event.target))
         });
-        const data = await response.json();
-        if (!response.ok) {
-            setAuthError(errorElementId, data.message || "Ocurrió un error, intenta de nuevo");
-            return;
-        }
         setAuth(data);
         closeAuthModal();
     } catch (e) {
-        setAuthError(errorElementId, "No se pudo conectar con el servidor");
+        setAuthError(errorElementId, e.message);
     }
 }
 

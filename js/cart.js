@@ -8,14 +8,6 @@ function cartIsLoggedIn() {
     return !!getAuth();
 }
 
-function imgBasePath() {
-    return window.location.pathname.includes("/pages/") ? "../img/" : "img/";
-}
-
-function checkoutUrl() {
-    return window.location.pathname.includes("/pages/") ? "checkout.html" : "pages/checkout.html";
-}
-
 function readGuestCartItems() {
     const raw = localStorage.getItem(CART_GUEST_KEY);
     if (!raw) {
@@ -35,22 +27,6 @@ function writeGuestCartItems(items) {
         return;
     }
     localStorage.setItem(CART_GUEST_KEY, JSON.stringify(items));
-}
-
-async function apiCartRequest(path, options = {}) {
-    const auth = getAuth();
-    const response = await fetch(`${CONFIG.API_URL}${path}`, {
-        ...options,
-        headers: {
-            "Content-Type": "application/json",
-            ...(auth ? { Authorization: `Bearer ${auth.token}` } : {}),
-            ...(options.headers || {})
-        }
-    });
-    if (!response.ok) {
-        throw new Error(`Cart request failed: ${response.status}`);
-    }
-    return response.json();
 }
 
 async function resolveCatalogItem(catalogType, itemId, currency) {
@@ -91,7 +67,7 @@ async function buildGuestCartView(currency) {
 }
 
 async function buildAccountCartView(currency) {
-    const data = await apiCartRequest(`/api/cart?currency=${currency}`);
+    const data = await apiRequest(`/api/cart?currency=${currency}`);
     return {
         items: data.items.map((item) => ({
             key: String(item.cartItemId),
@@ -124,7 +100,7 @@ async function refreshCart() {
 
 async function addToCart(catalogType, itemId, quantity = 1) {
     if (cartIsLoggedIn()) {
-        await apiCartRequest(`/api/cart/items?currency=${getCurrency()}`, {
+        await apiRequest(`/api/cart/items?currency=${getCurrency()}`, {
             method: "POST",
             body: JSON.stringify({ catalogType, itemId, quantity })
         });
@@ -144,9 +120,9 @@ async function addToCart(catalogType, itemId, quantity = 1) {
 async function setCartItemQuantity(key, catalogType, itemId, quantity) {
     if (cartIsLoggedIn()) {
         if (quantity < 1) {
-            await apiCartRequest(`/api/cart/items/${key}?currency=${getCurrency()}`, { method: "DELETE" });
+            await apiRequest(`/api/cart/items/${key}?currency=${getCurrency()}`, { method: "DELETE" });
         } else {
-            await apiCartRequest(`/api/cart/items/${key}?currency=${getCurrency()}`, {
+            await apiRequest(`/api/cart/items/${key}?currency=${getCurrency()}`, {
                 method: "PUT",
                 body: JSON.stringify({ quantity })
             });
@@ -222,8 +198,6 @@ function toggleCartPanel() {
     }
 }
 
-const CURRENCY_SYMBOLS_CART = { USD: "$", VES: "Bs." };
-
 function renderCartPanelItems() {
     const body = document.getElementById("cart-panel-body");
     const footer = document.getElementById("cart-panel-footer");
@@ -235,10 +209,10 @@ function renderCartPanelItems() {
         footer.innerHTML = "";
         return;
     }
-    const symbol = CURRENCY_SYMBOLS_CART[cartView.currency] ?? "$";
+    const symbol = currencySymbol(cartView.currency);
     body.innerHTML = cartView.items.map((item) => `
         <div class="cart-item" data-key="${item.key}" data-catalog-type="${item.catalogType}" data-item-id="${item.itemId}">
-            <img class="cart-item-img" src="${imgBasePath()}${item.imageUrl}" alt="${escapeHtml(item.name)}">
+            <img class="cart-item-img" src="${rootAssetPath("img/")}${item.imageUrl}" alt="${escapeHtml(item.name)}">
             <div class="cart-item-info">
                 <p class="cart-item-name">${escapeHtml(item.name)}</p>
                 <p class="cart-item-price">${symbol} ${item.price.toFixed(2)}</p>
@@ -268,7 +242,7 @@ function renderCartPanelItems() {
             openAuthModal();
             return;
         }
-        window.location.href = checkoutUrl();
+        window.location.href = pagePath("checkout.html");
     });
 }
 

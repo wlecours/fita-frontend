@@ -1,10 +1,9 @@
 const PAGE_SIZE = 12;
-const CURRENCY_SYMBOLS = { USD: "$", VES: "Bs." };
 
 let currentPage = 0;
 
 function renderMenuItem(menuItem) {
-    const symbol = CURRENCY_SYMBOLS[menuItem.currency] ?? "$";
+    const symbol = currencySymbol(menuItem.currency);
     return `
         <div>
             <div class="carousel-item centerDiv">

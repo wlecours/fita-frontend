@@ -1,5 +1,10 @@
 const CURRENCY_STORAGE_KEY = "fita-currency";
 const DEFAULT_CURRENCY = "USD";
+const CURRENCY_SYMBOLS = { USD: "$", VES: "Bs." };
+
+function currencySymbol(currency) {
+    return CURRENCY_SYMBOLS[currency] ?? "$";
+}
 
 function getCurrency() {
     return localStorage.getItem(CURRENCY_STORAGE_KEY) || DEFAULT_CURRENCY;

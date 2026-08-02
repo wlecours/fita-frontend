@@ -1,13 +1,8 @@
 let checkoutCart = { items: [], total: 0, currency: "USD" };
 let checkoutExchangeRate = 0;
 
-function checkoutCurrencySymbol(currency) {
-    return currency === "VES" ? "Bs." : "$";
-}
-
 async function fetchExchangeRate() {
-    const response = await fetch(`${CONFIG.API_URL}/api/exchange-rate`);
-    const data = await response.json();
+    const data = await apiRequest("/api/exchange-rate");
     return Number(data.usdToVes);
 }
 
@@ -38,7 +33,7 @@ function prefillFromAccount() {
 }
 
 function renderOrderSummary() {
-    const symbol = checkoutCurrencySymbol(checkoutCart.currency);
+    const symbol = currencySymbol(checkoutCart.currency);
     document.getElementById("checkout-summary-items").innerHTML = checkoutCart.items.map((item) => `
         <div class="checkout-summary-item" data-key="${item.key}" data-catalog-type="${item.catalogType}" data-item-id="${item.itemId}">
             <div class="checkout-summary-item-info">
@@ -108,7 +103,7 @@ async function initCheckoutPage() {
 }
 
 function renderConfirmation(order) {
-    const symbol = checkoutCurrencySymbol(order.currency);
+    const symbol = currencySymbol(order.currency);
     const isVes = order.currency === "VES";
     const secondaryLabel = isVes ? "Total en USD" : "Total en Bs.";
     const secondaryTotal = isVes ? order.totalUsd : order.totalVes;
@@ -150,24 +145,15 @@ async function submitCheckout(event) {
         currency: checkoutCart.currency
     };
     try {
-        const response = await fetch(`${CONFIG.API_URL}/api/orders`, {
+        const data = await apiRequest("/api/orders", {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${getAuth().token}`
-            },
             body: JSON.stringify(payload)
         });
-        const data = await response.json();
-        if (!response.ok) {
-            errorEl.textContent = data.message || "Ocurrió un error, verifica los datos e intenta de nuevo";
-            return;
-        }
         await refreshCart();
         renderConfirmation(data);
         showCheckoutState("confirmation");
     } catch (e) {
-        errorEl.textContent = "No se pudo conectar con el servidor";
+        errorEl.textContent = e.message;
     }
 }
 

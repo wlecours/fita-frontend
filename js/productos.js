@@ -1,10 +1,9 @@
 const PAGE_SIZE = 12;
-const CURRENCY_SYMBOLS = { USD: "$", VES: "Bs." };
 
 let currentPage = 0;
 
 function renderProduct(product) {
-    const symbol = CURRENCY_SYMBOLS[product.currency] ?? "$";
+    const symbol = currencySymbol(product.currency);
     return `
         <div>
             <div class="producto flex vflex gap8 centerDiv">
