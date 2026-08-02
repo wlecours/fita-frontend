@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finalizar Compra - Fita</title>
+    <link rel="icon" href="../img/Logo.ico" type="image/x-icon">
+    <link rel="stylesheet" href="../css/style.css">
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Arima:wght@100;200;300;400;500;600;700&family=Asap+Condensed:wght@200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- LINK SEO -->
+    <meta name="description" content="Finaliza tu compra en Fita">
+</head>
+<body>
+    <header>
+       <!-- NAV BAR -->
+       <nav class="navBar fntAsap allWidth flxBetween flxAlgnCenter">
+
+        <!-- Logo -->
+        <div><a href="../index.html"><img src="../img/logo-letras-derecha.png" alt="Logo de Fita" height="60px" width=""></a></div>
+
+        <!-- Menu de navegacion y selector de moneda -->
+        <div class="flex flxAlgnCenter gap20">
+            <ul>
+                <!-- Checkbox para el menú de Hamburguesa -->
+                <input type="checkbox" id="checkbox_toggle" />
+                <label for="checkbox_toggle" class="hamburger">&#9776;</label>
+                <!-- Links de Navegación -->
+                <div class="menu">
+                    <li><a href="../index.html">Inicio</a></li>
+                    <li><a href="nosotros.html">Sobre Nosotros</a></li>
+                    <li><a href="menu.html">Menú</a></li>
+                    <li><a href="productos.html">Productos</a></li>
+                    <li><a href="ubicaciones.html">Dónde Encontrarnos</a></li>
+                </div>
+            </ul>
+
+            <select id="currency-select" class="currency-select" aria-label="Moneda">
+                <option value="USD">USD</option>
+                <option value="VES">Bs.</option>
+            </select>
+
+            <div id="auth-nav" class="auth-nav"></div>
+            <div id="cart-nav" class="cart-nav"></div>
+        </div>
+      </nav>
+
+      <!-- AUTH MODAL -->
+      <div id="auth-modal" class="auth-modal-overlay" hidden>
+        <div class="auth-modal" role="dialog" aria-modal="true" aria-labelledby="auth-modal-title">
+          <button type="button" class="auth-modal-close" id="auth-modal-close" aria-label="Cerrar">&times;</button>
+
+          <div id="auth-login-view" class="auth-view">
+            <h2 id="auth-modal-title">Iniciar Sesión</h2>
+            <form id="auth-login-form" class="auth-form">
+              <label>Correo Electrónico
+                <input type="email" name="email" required>
+              </label>
+              <label>Contraseña
+                <input type="password" name="password" required>
+              </label>
+              <p class="auth-error" id="auth-login-error"></p>
+              <button type="submit" class="auth-submit-btn">Entrar</button>
+            </form>
+            <p class="auth-switch">¿No tienes cuenta? <button type="button" class="auth-link-btn" id="auth-show-register">Regístrate</button></p>
+          </div>
+
+          <div id="auth-register-view" class="auth-view" hidden>
+            <h2>Crear Cuenta</h2>
+            <form id="auth-register-form" class="auth-form">
+              <label>Correo Electrónico
+                <input type="email" name="email" required>
+              </label>
+              <label>Nombre y Apellido
+                <input type="text" name="name" required>
+              </label>
+              <label>Contraseña
+                <input type="password" name="password" minlength="8" required>
+              </label>
+              <label>Teléfono
+                <input type="tel" name="phone" inputmode="numeric" pattern="\+?[0-9]*" title="Solo números" required>
+              </label>
+              <label>Dirección (opcional)
+                <input type="text" name="address">
+              </label>
+              <p class="auth-error" id="auth-register-error"></p>
+              <button type="submit" class="auth-submit-btn">Crear Cuenta</button>
+            </form>
+            <p class="auth-switch">¿Ya tienes cuenta? <button type="button" class="auth-link-btn" id="auth-show-login">Inicia Sesión</button></p>
+          </div>
+        </div>
+      </div>
+    <!-- HERO -->
+        <div class="hero banner padding80">
+            <div class="espacio30"></div>
+
+            <div class="flex vflex flxEnd allHeight flxAlgnCenter">
+                <div class="flex flxCenter flxAlgnCenter vflexMobile gap20">
+                    <div class="circulo"> </div>
+                    <h1>Finalizar Compra</h1>
+                </div>
+                <div class="espacio30"></div>
+            </div>
+        </div>
+    </header>
+    <main>
+        <div class="espacio60"></div>
+
+        <!-- Gate: not logged in -->
+        <div id="checkout-gate" class="checkout-state-card" hidden>
+            <p>Debes iniciar sesión para finalizar tu compra.</p>
+            <button type="button" class="checkout-submit-btn" id="checkout-gate-login-btn">Iniciar Sesión</button>
+        </div>
+
+        <!-- Empty cart -->
+        <div id="checkout-empty" class="checkout-state-card" hidden>
+            <p>Tu carrito está vacío.</p>
+            <a class="checkout-submit-btn" href="productos.html">Ver Productos</a>
+        </div>
+
+        <!-- Checkout form + summary -->
+        <div id="checkout-content" class="checkout-layout padding80" hidden>
+            <form id="checkout-form" class="checkout-form">
+                <h2>Datos del Pedido</h2>
+
+                <label>Nombre y Apellido
+                    <input type="text" name="customerName" required>
+                </label>
+
+                <label>Teléfono
+                    <input type="tel" name="phone" required>
+                </label>
+
+                <label>Correo Electrónico
+                    <input type="email" name="email" required>
+                </label>
+
+                <label>Cédula / RIF
+                    <input type="text" name="fiscalId" required>
+                </label>
+
+                <div class="checkout-field-group">
+                    <span class="checkout-field-label">Entrega</span>
+                    <div class="checkout-radio-group">
+                        <label class="checkout-radio"><input type="radio" name="deliveryMethod" value="DELIVERY" checked> Delivery</label>
+                        <label class="checkout-radio"><input type="radio" name="deliveryMethod" value="PICKUP"> Pick up</label>
+                    </div>
+                </div>
+
+                <label id="checkout-field-address">Dirección de Entrega
+                    <input type="text" name="deliveryAddress">
+                </label>
+
+                <label id="checkout-field-pickup" hidden>Punto de Retiro
+                    <input type="text" name="pickupPoint">
+                </label>
+
+                <label>Método de Pago
+                    <select name="paymentMethod" required>
+                        <option value="PAGO_MOVIL">Pago Móvil</option>
+                        <option value="TRANSFERENCIA">Transferencia</option>
+                        <option value="PAYPAL">PayPal</option>
+                        <option value="BINANCE">Binance</option>
+                        <option value="ZINLI">Zinli</option>
+                    </select>
+                </label>
+
+                <label>Banco / Usuario o Correo de Origen
+                    <input type="text" name="paymentSenderInfo" required>
+                </label>
+
+                <label>Número de Referencia de la Operación
+                    <input type="text" name="paymentReference" required>
+                </label>
+
+                <p class="checkout-error" id="checkout-error"></p>
+
+                <button type="submit" class="checkout-submit-btn">Confirmar Pedido</button>
+            </form>
+
+            <aside class="checkout-summary">
+                <h2>Resumen del Pedido</h2>
+                <div id="checkout-summary-items" class="checkout-summary-items"></div>
+                <div class="checkout-summary-divider"></div>
+                <div class="checkout-summary-total-row">
+                    <span>Total</span>
+                    <span id="checkout-summary-total"></span>
+                </div>
+                <div class="checkout-summary-total-row checkout-summary-total-row-secondary">
+                    <span id="checkout-summary-secondary-label"></span>
+                    <span id="checkout-summary-total-ves"></span>
+                </div>
+                <p class="checkout-summary-rate" id="checkout-exchange-rate"></p>
+            </aside>
+        </div>
+
+        <!-- Confirmation -->
+        <div id="checkout-confirmation" class="checkout-state-card" hidden>
+            <div id="checkout-confirmation-body"></div>
+            <a class="checkout-submit-btn" href="../index.html">Volver al Inicio</a>
+        </div>
+
+        <div class="espacio60"></div>
+    </main>
+
+    <footer class="bg-oscuro">
+        <!-- FOOTER -->
+        <div class="flex vflex flxAlgnCenter gap20" >
+          <img src="../img/logo-letras-derecha.png" height="92px" width="160px">
+          <div class="flex flxAlgnCenter footer__SMlogos gap25">
+            <button class="SMlogo SMfooter" onclick='location.href="https://www.instagram.com/"'>
+              <img src="../img/sm-instagram.svg">
+            </button>
+            <button class="SMlogo SMfooter" onclick='location.href="https://www.whatsapp.com/?lang=es"'>
+              <img src="../img/sm-whatsapp.svg">
+            </button>
+            <button class="SMlogo SMfooter" onclick='location.href="https://www.pinterest.es/"'>
+              <img src="../img/sm-pinterest.svg">
+            </button>
+            <button class="SMlogo SMfooter" onclick='location.href="https://www.youtube.com/"'>
+              <img src="../img/sm-youtube.svg">
+            </button>
+          </div>
+          <p class="txtBlanco">Copyright ©Fita 2023 | www.fita.co </p>
+      </footer>
+
+    <script src="../js/config.js"></script>
+    <script src="../js/currency.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/cart.js"></script>
+    <script src="../js/checkout.js"></script>
+</body>
+</html>

@@ -12,6 +12,10 @@ function imgBasePath() {
     return window.location.pathname.includes("/pages/") ? "../img/" : "img/";
 }
 
+function checkoutUrl() {
+    return window.location.pathname.includes("/pages/") ? "checkout.html" : "pages/checkout.html";
+}
+
 function readGuestCartItems() {
     const raw = localStorage.getItem(CART_GUEST_KEY);
     if (!raw) {
@@ -256,8 +260,16 @@ function renderCartPanelItems() {
             <span>Total</span>
             <span>${symbol} ${cartView.total.toFixed(2)}</span>
         </div>
-        <button type="button" class="cart-checkout-btn" disabled title="Próximamente">Proceder al Pago</button>
+        <button type="button" class="cart-checkout-btn" id="cart-checkout-btn">Proceder al Pago</button>
     `;
+    document.getElementById("cart-checkout-btn")?.addEventListener("click", () => {
+        if (!cartIsLoggedIn()) {
+            closeCartPanel();
+            openAuthModal();
+            return;
+        }
+        window.location.href = checkoutUrl();
+    });
 }
 
 function renderCartNav() {
