@@ -1695,11 +1695,103 @@ header {
 
 .checkout-summary-item {
   display: flex;
+  align-items: center;
   justify-content: space-between;
   gap: 12px;
   font-family: "Arima", cursive;
   font-size: 13px;
   color: var(--color-black);
+}
+
+.checkout-summary-item-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+  min-width: 0;
+}
+
+.checkout-summary-item-name {
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.checkout-summary-item-qty {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.checkout-qty-btn {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-claro);
+  color: var(--color-destaque);
+  box-shadow: none;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.checkout-qty-btn:hover {
+  background-color: var(--color-destaque);
+  color: var(--color-white);
+}
+
+.checkout-qty-btn:disabled {
+  background-color: rgba(33, 41, 34, 0.08);
+  color: rgba(33, 41, 34, 0.3);
+  cursor: not-allowed;
+}
+
+.checkout-qty-value {
+  min-width: 14px;
+  text-align: center;
+  font-weight: 700;
+}
+
+.checkout-summary-item-right {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.checkout-summary-item-price {
+  white-space: nowrap;
+}
+
+.checkout-summary-remove-btn {
+  appearance: none;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  background-color: transparent;
+  box-shadow: none;
+  border-radius: 6px;
+  color: rgba(33, 41, 34, 0.5);
+}
+
+.checkout-summary-remove-btn:hover {
+  background-color: rgba(229, 89, 52, 0.1);
+  color: var(--color-CTA);
+}
+
+.checkout-summary-remove-icon {
+  width: 16px;
+  height: 16px;
 }
 
 .checkout-summary-divider {
